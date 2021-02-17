@@ -16,7 +16,6 @@ namespace SummerSchoolCovidAPI.Services
             _context = context;
         }
 
-
         public async Task<CovidCase> AddCovidCase(CovidCaseDTO covidCase)
         {
             var obj = new CovidCase
@@ -25,9 +24,7 @@ namespace SummerSchoolCovidAPI.Services
                 DoctorName = covidCase.DoctorName,
                 TestLocation = covidCase.TestLocation,
                 InfectedUserId = covidCase.InfectedUserId,
-                Id = covidCase.Id,
-               
-
+                Id = covidCase.Id
             };
             var entityAdded = await _context.CovidCases.AddAsync(obj);
             return entityAdded.Entity;
