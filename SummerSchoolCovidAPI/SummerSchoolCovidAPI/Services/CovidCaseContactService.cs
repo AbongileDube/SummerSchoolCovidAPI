@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace SummerSchoolCovidAPI.Services
 {
-    private readonly CovidAPIContext _context;
-    public class CovidCaseContactService : CovidCaseContact
+    public class CovidCaseContactService : ICovidCaseContactService
     {
+        private readonly CovidAPIContext _context;
+
         public CovidCaseContactService(CovidAPIContext context)
         {
             _context = context;
         }
 
-        public async Task<CovidCase> AddCovidCaseContact(CovidCaseContactDTO covidCaseContact)
+        public async Task<CovidCaseContact> AddCovidCaseContact(CovidCaseContactDTO covidCaseContact)
         {
             var obj = new CovidCaseContact
             {
-              Name = covidCaseContact.Name,
-              Surname = covidCaseContact.Surname,
-              Email = covidCaseContact.Email,
-              MobileNumber = covidCaseContact.MobileNumber,
-              Location = covidCaseContact.Location,
-              Id = covidCaseContact.Id,
-
+                Name = covidCaseContact.Name,
+                Surname = covidCaseContact.Surname,
+                Email = covidCaseContact.Email,
+                MobileNumber = covidCaseContact.MobileNumber,
+                Location = covidCaseContact.Location,
+                Id = covidCaseContact.Id,
             };
-            var entityAdded = await _context.CovidCases.AddAsync(obj);
+            var entityAdded = await _context.CovidCaseContacts.AddAsync(obj);
             await _context.SaveChangesAsync();
             return entityAdded.Entity;
         }
@@ -43,6 +43,11 @@ namespace SummerSchoolCovidAPI.Services
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<CovidCase>> GetCovidCaseContacts()
         {
             throw new NotImplementedException();
@@ -52,6 +57,15 @@ namespace SummerSchoolCovidAPI.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<CovidCaseContact> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContact)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<CovidCaseContact> ICovidCaseContactService.GetCovidCaseContact(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

@@ -5,31 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 
 namespace SummerSchoolCovidAPI.Services
 {
-    private readonly CovidAPIContext _context;
-    public class InfectedUserService :InfectedUser
+    public class InfectedUserService : IInfectedUserService
     {
+        private readonly CovidAPIContext _context;
+
         public InfectedUserService(CovidAPIContext context)
         {
             _context = context;
         }
-        public async Task<CovidCase> AddCovidCaseContact(CovidCaseContactDTO covidCaseContact)
-        {
-            var obj = new CovidCaseContact
-            {
-                Name = covidCaseContact.Name,
-                Surname = covidCaseContact.Surname,
-                Email = covidCaseContact.Email,
-                MobileNumber = covidCaseContact.MobileNumber,
-                Location = covidCaseContact.Location,
-                Id = covidCaseContact.Id,
 
-            };
-            var entityAdded = await _context.CovidCases.AddAsync(obj);
-            await _context.SaveChangesAsync();
-            return entityAdded.Entity;
+        public Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser)
+        {
+            throw new NotImplementedException();
         }
 
         public Task DeleteInfectedUser(string id)
@@ -37,7 +28,7 @@ namespace SummerSchoolCovidAPI.Services
             throw new NotImplementedException();
         }
 
-        public Task<InfectedUser> UpdateInfectedUser(string id)
+        public Task<InfectedUser> GetInfectedUser(string id)
         {
             throw new NotImplementedException();
         }
@@ -51,8 +42,5 @@ namespace SummerSchoolCovidAPI.Services
         {
             throw new NotImplementedException();
         }
-    }
-}
-
     }
 }

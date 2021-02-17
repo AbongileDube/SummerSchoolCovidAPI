@@ -22,13 +22,11 @@ namespace SummerSchoolCovidAPI.Controllers
             _covidCaseService = covidCaseService;
         }
 
-
-
         // GET: api/CovidCases
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CovidCase>>> GetCovidCases()
         {
-            return Ok( await _covidCaseService.GetCovidCases());
+            return Ok(await _covidCaseService.GetCovidCases());
         }
 
         // GET: api/CovidCases/5
@@ -42,7 +40,7 @@ namespace SummerSchoolCovidAPI.Controllers
                 return NotFound();
             }
 
-            return Ok( covidCase);
+            return Ok(covidCase);
         }
 
         // PUT: api/CovidCases/5
@@ -67,8 +65,7 @@ namespace SummerSchoolCovidAPI.Controllers
         {
             var covidCaseResult = await _covidCaseService.AddCovidCase(covidCase);
 
-            return Ok( covidCaseResult);
+            return Ok(covidCaseResult);
         }
-
     }
 }

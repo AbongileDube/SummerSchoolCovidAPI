@@ -1,4 +1,5 @@
-﻿using SummerSchoolCovidAPI.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
 using System;
@@ -11,6 +12,7 @@ namespace SummerSchoolCovidAPI.Services
     public class CovidCaseService : ICovidCaseService
     {
         private readonly CovidAPIContext _context;
+
         public CovidCaseService(CovidAPIContext context)
         {
             _context = context;
@@ -33,32 +35,34 @@ namespace SummerSchoolCovidAPI.Services
 
         public async Task DeleteCovidCase(string id)
         {
-            var entityAdded = await _context.CovidCases.FindAsync(id);
+            var entity = await _context.CovidCases.FindAsync(id);
+            _context.CovidCases.Remove(entity);
             await _context.SaveChangesAsync();
-            return ;
         }
-
-    }
 
         public async Task<CovidCase> GetCovidCase(string id)
         {
-        var entityAdded = await _context.CovidCases.AddAsync(obj);
-        await _context.SaveChangesAsync();
-        return entityAdded.Entity;
-    }
+            return await _context.CovidCases.FindAsync(id);
+        }
 
         public async Task<IEnumerable<CovidCase>> GetCovidCases()
         {
-            var entityAdded = await _context.CovidCases.AddAsync(obj);
-            await _context.SaveChangesAsync();
-            return entityAdded.Entity;
+            return await _context.CovidCases.ToListAsync();
         }
 
         public async Task<CovidCase> UpdateCovidCase(string id, CovidCaseDTO covidCase)
         {
-            var entityAdded = await _context.CovidCases.AddAsync(obj);
+            var entity = await _context.CovidCases.FindAsync(id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Given Id:'{id}' is not found");
+            }
+
+            entity.DoctorName = covidCase.DoctorName;
+            entity.TestLocation = covidCase.TestLocation;
+            entity.InfectedUserId = covidCase.InfectedUserId;
             await _context.SaveChangesAsync();
-            return entityAdded.Entity;
+            return entity;
         }
     }
 }

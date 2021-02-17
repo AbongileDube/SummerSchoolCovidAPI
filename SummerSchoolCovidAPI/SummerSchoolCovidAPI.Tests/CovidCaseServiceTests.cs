@@ -5,6 +5,7 @@ using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
 using SummerSchoolCovidAPI.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -103,6 +104,65 @@ namespace SummerSchoolCovidAPI.Tests
             Assert.IsTrue(entities.Any(a => a.Id == covidCaseDto1.Id));
             Assert.IsTrue(entities.Any(a => a.Id == covidCaseDto2.Id));
             Assert.AreEqual(2, await _dbContext.CovidCases.CountAsync());
+        }
+
+        [TestMethod]
+        public async Task UpdateCovidCase_GivenInValidId_ShouldThrowKeyNotFoundException()
+        {
+            //Arrange
+            var covidCaseDto = new CovidCaseDTO
+            {
+                DoctorName = "Zama Dlamini",
+                Id = "case-1",
+                InfectedUserId = _infectedUser.Id,
+                TestLocation = "South Africa, Durban",
+                DateActioned = DateTime.Now
+            };
+
+            //Act and Assert
+            await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => _service.UpdateCovidCase("wrong-Id", covidCaseDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCovidCase_GivenValidInputs_ShouldUpdateSuccessfully()
+        {
+            //Arrange
+            var covidCaseDto1 = new CovidCaseDTO
+            {
+                DoctorName = "Zama Dlamini",
+                Id = "case-1",
+                InfectedUserId = _infectedUser.Id,
+                TestLocation = "South Africa, Durban",
+                DateActioned = DateTime.Now
+            };
+            var covidCaseDto2 = new CovidCaseDTO
+            {
+                DoctorName = "Joe Zuma",
+                Id = "case-2",
+                InfectedUserId = _infectedUser.Id,
+                TestLocation = "South Africa, Durban North",
+                DateActioned = DateTime.Now
+            };
+            var covidCaseDtoUpdate = new CovidCaseDTO
+            {
+                DoctorName = "Joe Zuma - update",
+                InfectedUserId = _infectedUser.Id,
+                TestLocation = "South Africa, Durban North - Updated",
+                DateActioned = DateTime.Now
+            };
+
+            await _service.AddCovidCase(covidCaseDto1);
+            await _service.AddCovidCase(covidCaseDto2);
+
+            //Act
+            var updated = await _service.UpdateCovidCase(covidCaseDto1.Id, covidCaseDtoUpdate);
+
+            //Assert
+            Assert.AreEqual(covidCaseDtoUpdate.DoctorName, updated.DoctorName);
+            Assert.AreEqual(covidCaseDtoUpdate.TestLocation, updated.TestLocation);
+            Assert.AreEqual(covidCaseDtoUpdate.InfectedUserId, updated.InfectedUserId);
+
+            Assert.IsTrue(await _dbContext.CovidCases.AnyAsync(a => a.DoctorName == covidCaseDtoUpdate.DoctorName));
         }
     }
 }
