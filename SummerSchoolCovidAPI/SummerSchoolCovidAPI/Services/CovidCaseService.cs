@@ -31,24 +31,34 @@ namespace SummerSchoolCovidAPI.Services
             return entityAdded.Entity;
         }
 
-        public Task DeleteCovidCase(string id)
+        public async Task DeleteCovidCase(string id)
         {
-            throw new NotImplementedException();
+            var entityAdded = await _context.CovidCases.FindAsync(id);
+            await _context.SaveChangesAsync();
+            return ;
         }
 
-        public Task<CovidCase> GetCovidCase(string id)
+    }
+
+        public async Task<CovidCase> GetCovidCase(string id)
         {
-            throw new NotImplementedException();
+        var entityAdded = await _context.CovidCases.AddAsync(obj);
+        await _context.SaveChangesAsync();
+        return entityAdded.Entity;
+    }
+
+        public async Task<IEnumerable<CovidCase>> GetCovidCases()
+        {
+            var entityAdded = await _context.CovidCases.AddAsync(obj);
+            await _context.SaveChangesAsync();
+            return entityAdded.Entity;
         }
 
-        public Task<IEnumerable<CovidCase>> GetCovidCases()
+        public async Task<CovidCase> UpdateCovidCase(string id, CovidCaseDTO covidCase)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<CovidCase> UpdateCovidCase(string id, CovidCaseDTO covidCase)
-        {
-            throw new NotImplementedException();
+            var entityAdded = await _context.CovidCases.AddAsync(obj);
+            await _context.SaveChangesAsync();
+            return entityAdded.Entity;
         }
     }
 }

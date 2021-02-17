@@ -31,6 +31,9 @@ namespace SummerSchoolCovidAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICovidCaseService, CovidCaseService>();
+            services.AddScoped<ICovidCaseContactService, CovidCaseContactService>();
+            services.AddScoped<IInfectedUserService, InfectedUserService>();
+
 
             services.AddControllers();
             services.AddDbContext<CovidAPIContext>(opt =>
