@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Models;
 
 namespace SummerSchoolCovidAPI
 {
@@ -28,6 +30,8 @@ namespace SummerSchoolCovidAPI
         {
 
             services.AddControllers();
+            services.AddDbContext<CovidAPIContext>(opt =>
+                                              opt.UseInMemoryDatabase("SummerSchoolCovidList"));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SummerSchoolCovidAPI", Version = "v1" });
