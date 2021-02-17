@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SummerSchoolCovidAPI.Services
 {
@@ -33,35 +34,41 @@ namespace SummerSchoolCovidAPI.Services
             return entityAdded.Entity;
         }
 
-        public Task DeleteCovidCaseContact(string id)
+        public async Task DeleteCovidCaseContact(string id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.CovidCaseContacts.FindAsync(id);
+            _context.CovidCaseContacts.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<CovidCase> GetCovidCaseContact(string id)
+        public async Task<CovidCaseContact> GetCovidCaseContact(string id)
         {
-            throw new NotImplementedException();
+            return await _context.CovidCaseContacts.FindAsync(id);
         }
 
-        public Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact()
+        public  async Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact()
         {
-            throw new NotImplementedException();
+            return await _context.CovidCaseContacts.ToListAsync();
         }
 
-        public Task<IEnumerable<CovidCase>> GetCovidCaseContacts()
+        public async Task<IEnumerable<CovidCase>> GetCovidCaseContacts()
         {
-            throw new NotImplementedException();
+            return await _context.CovidCases.ToListAsync();
         }
 
-        public Task<CovidCase> UpdateCovidCaseContact(string id, CovidCaseDTO covidCase)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<CovidCase> UpdateCovidCaseContact(string id, CovidCaseDTO covidCase)
+        //{
+        //    return await _context.CovidCaseContacts.ToListAsync();
+        //}
 
-        public Task<CovidCaseContact> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContact)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<CovidCaseContact> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContact)
+        //{
+        //    var entity = await _context.CovidCaseContacts.FindAsync(id);
+        //    if (entity == null)
+        //    {
+        //        throw new KeyNotFoundException($"Given Id:'{id}' is not found");
+        //    }
+        //}
 
         Task<CovidCaseContact> ICovidCaseContactService.GetCovidCaseContact(string id)
         {

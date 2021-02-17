@@ -1,46 +1,68 @@
-﻿using SummerSchoolCovidAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
+using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SummerSchoolCovidAPI.Interfaces;
 
 namespace SummerSchoolCovidAPI.Services
 {
     public class InfectedUserService : IInfectedUserService
     {
         private readonly CovidAPIContext _context;
-
-        public InfectedUserService(CovidAPIContext context)
+        public async Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser)
         {
-            _context = context;
+            var obj = new InfectedUser
+            {
+                Name = infectedUser.Name,
+                Surname = infectedUser.Surname,
+                Email = infectedUser.Email,
+                Location = infectedUser.Location,
+                MobileNumber = infectedUser.MobileNumber,
+                Infected = infectedUser.Infected,
+                Id = infectedUser.Id,
+            };
+            var entityAdded = await _context.InfectedUsers.AddAsync(obj);
+            await _context.SaveChangesAsync();
+            return entityAdded.Entity;
         }
 
-        public Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser)
+        public async Task DeleteInfectedUser(string id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.InfectedUsers.FindAsync(id);
+            _context.InfectedUsers.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteInfectedUser(string id)
+        public async Task<InfectedUser> GetInfectedUser(string id)
         {
-            throw new NotImplementedException();
+            return await _context.InfectedUsers.FindAsync(id);
         }
 
-        public Task<InfectedUser> GetInfectedUser(string id)
+        public async Task<IEnumerable<InfectedUser>> GetInfectedUsers()
         {
-            throw new NotImplementedException();
+            return await _context.InfectedUsers.ToListAsync();
         }
 
-        public Task<IEnumerable<InfectedUser>> GetInfectedUsers()
+        public async Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDTO infectedUser)
+            
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDTO infectedUser)
-        {
-            throw new NotImplementedException();
+            var entity = await _context.InfectedUsers.FindAsync(id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Given Id:'{id}' is not found");
+            }
+            entity.Name = infectedUser.Name;
+            entity.Surname = infectedUser.Surname;
+            entity.Location = infectedUser.Location;
+            entity.Infected = infectedUser.Infected;
+            entity.MobileNumber = infectedUser.MobileNumber;
+            entity.Email = infectedUser.Email;
+            entity.Id = infectedUser.Id;
+            await _context.SaveChangesAsync();
+            return entity;
         }
     }
 }
