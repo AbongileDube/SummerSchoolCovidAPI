@@ -52,7 +52,7 @@ namespace SummerSchoolCovidAPI.Controllers
                 return BadRequest();
             }
 
-            var covidCaseContact =
+            
 
             try
             {

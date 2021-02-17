@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
+using SummerSchoolCovidAPI.Models.DTO;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -13,109 +15,60 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class CovidCasesController : ControllerBase
     {
-        private readonly CovidAPIContext _context;
+        private readonly ICovidCaseService _covidCaseService;
 
-        public CovidCasesController(CovidAPIContext context)
+        public CovidCasesController(ICovidCaseService covidCaseService)
         {
-            _context = context;
+            _covidCaseService = covidCaseService;
         }
+
+
 
         // GET: api/CovidCases
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CovidCase>>> GetCovidCases()
         {
-            return await _context.CovidCases.ToListAsync();
+            return Ok( await _covidCaseService.GetCovidCases());
         }
 
         // GET: api/CovidCases/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CovidCase>> GetCovidCase(string id)
         {
-            var covidCase = await _context.CovidCases.FindAsync(id);
+            var covidCase = await _covidCaseService.GetCovidCase(id);
 
             if (covidCase == null)
             {
                 return NotFound();
             }
 
-            return covidCase;
+            return Ok( covidCase);
         }
 
         // PUT: api/CovidCases/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCovidCase(string id, CovidCase covidCase)
+        public async Task<IActionResult> PutCovidCase(string id, CovidCaseDTO covidCase)
         {
             if (id != covidCase.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(covidCase).State = EntityState.Modified;
+            var covidcase = await _covidCaseService.UpdateCovidCase(id, covidCase);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CovidCaseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(covidcase);
         }
 
         // POST: api/CovidCases
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCase covidCase)
+        public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCaseDTO covidCase)
         {
-            _context.CovidCases.Add(covidCase);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CovidCaseExists(covidCase.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var covidCaseResult = await _covidCaseService.AddCovidCase(covidCase);
 
-            return CreatedAtAction("GetCovidCase", new { id = covidCase.Id }, covidCase);
+            return Ok( covidCaseResult);
         }
 
-        // DELETE: api/CovidCases/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCovidCase(string id)
-        {
-            var covidCase = await _context.CovidCases.FindAsync(id);
-            if (covidCase == null)
-            {
-                return NotFound();
-            }
-
-            _context.CovidCases.Remove(covidCase);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CovidCaseExists(string id)
-        {
-            return _context.CovidCases.Any(e => e.Id == id);
-        }
     }
 }

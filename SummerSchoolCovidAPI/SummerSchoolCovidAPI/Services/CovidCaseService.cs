@@ -27,6 +27,7 @@ namespace SummerSchoolCovidAPI.Services
                 Id = covidCase.Id
             };
             var entityAdded = await _context.CovidCases.AddAsync(obj);
+            await _context.SaveChangesAsync();
             return entityAdded.Entity;
         }
 

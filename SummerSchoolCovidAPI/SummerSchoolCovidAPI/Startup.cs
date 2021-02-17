@@ -34,10 +34,16 @@ namespace SummerSchoolCovidAPI
 
             services.AddControllers();
             services.AddDbContext<CovidAPIContext>(opt =>
-                                              opt.UseInMemoryDatabase("SummerSchoolCovidList"));
+                                              opt.UseSqlServer(Configuration.GetConnectionString("default")));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SummerSchoolCovidAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "Summer School Covid API", 
+                    Version = "v1",
+                    Contact = new OpenApiContact {
+                        Name = "Abongile Dube" 
+                    }
+                });
             });
         }
 
@@ -48,7 +54,7 @@ namespace SummerSchoolCovidAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SummerSchoolCovidAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Summer School Covid API v1"));
             }
 
             app.UseHttpsRedirection();
