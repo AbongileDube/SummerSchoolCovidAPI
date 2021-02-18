@@ -26,8 +26,9 @@ namespace SummerSchoolCovidAPI.Services
                 Surname = covidCaseContact.Surname,
                 Email = covidCaseContact.Email,
                 MobileNumber = covidCaseContact.MobileNumber,
-                Location = covidCaseContact.LocationId,
+                LocationId= covidCaseContact.LocationId,
                 InfectedUserId =covidCaseContact.InfectedUserId,
+                CovidCaseId = covidCaseContact.CovidCaseId,
                 Id = covidCaseContact.Id,
             };
             var entityAdded = await _context.CovidCaseContacts.AddAsync(obj);

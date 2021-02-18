@@ -26,7 +26,10 @@ namespace SummerSchoolCovidAPI.Services
                 DoctorName = covidCase.DoctorName,
                 TestLocation = covidCase.TestLocation,
                 InfectedUserId = covidCase.InfectedUserId,
+                Infected = covidCase.Infected,
                 Id = covidCase.Id
+                
+                
             };
             var entityAdded = await _context.CovidCases.AddAsync(obj);
             await _context.SaveChangesAsync();
@@ -61,6 +64,7 @@ namespace SummerSchoolCovidAPI.Services
             entity.DoctorName = covidCase.DoctorName;
             entity.TestLocation = covidCase.TestLocation;
             entity.InfectedUserId = covidCase.InfectedUserId;
+            entity.Infected = covidCase.Infected;
             await _context.SaveChangesAsync();
             return entity;
         }

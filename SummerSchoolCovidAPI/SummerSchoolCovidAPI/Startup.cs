@@ -33,6 +33,8 @@ namespace SummerSchoolCovidAPI
             services.AddScoped<ICovidCaseService, CovidCaseService>();
             services.AddScoped<ICovidCaseContactService, CovidCaseContactService>();
             services.AddScoped<IInfectedUserService, InfectedUserService>();
+            services.AddScoped<ILocationService, LocationService>();
+
 
 
             services.AddControllers();

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
+using SummerSchoolCovidAPI.Models.Logic;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -16,11 +17,13 @@ namespace SummerSchoolCovidAPI.Controllers
     public class CovidCasesController : ControllerBase
     {
         private readonly ICovidCaseService _covidCaseService;
+        private readonly IInfectedUserService _infectedUserService;
         private readonly CovidAPIContext _context;
 
-        public CovidCasesController(ICovidCaseService covidCaseService)
+        public CovidCasesController(ICovidCaseService covidCaseService, IInfectedUserService infectedUserService)
         {
             _covidCaseService = covidCaseService;
+            _infectedUserService = infectedUserService;
         }
 
         // GET: api/CovidCases
@@ -64,7 +67,15 @@ namespace SummerSchoolCovidAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCaseDTO covidCase)
         {
+            //var infectedUser = await _infectedUserService.GetInfectedUser(covidCase.Id);
+            if (covidCase.Infected == true)
+            {
+                Logic.updateInfectedUser(covidCase.InfectedUserId);
+                Logic.updateLocation(covidCase.InfectedUserId);
+            }
+
             var covidCaseResult = await _covidCaseService.AddCovidCase(covidCase);
+
 
             return Ok(covidCaseResult);
         }

@@ -14,5 +14,7 @@ namespace SummerSchoolCovidAPI.Models.DTO
         public string Suburb { get; set; }
         public string Province { get; set; }
         public int CNumberInfected { get; set; } //current Number of people infected
+   
+
     }
 }

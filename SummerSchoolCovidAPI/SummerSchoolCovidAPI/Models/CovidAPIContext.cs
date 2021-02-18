@@ -8,6 +8,10 @@ namespace SummerSchoolCovidAPI.Models
 {
     public class CovidAPIContext : DbContext
     {
+        public CovidAPIContext()
+        {
+        }
+
         public CovidAPIContext(DbContextOptions<CovidAPIContext> options) : base(options)
         {
 

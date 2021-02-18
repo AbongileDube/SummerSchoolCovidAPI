@@ -25,7 +25,7 @@ namespace SummerSchoolCovidAPI.Services
                 Suburb = location.Suburb,
                 Province = location.Province,
                 CNumberInfected = location.CNumberInfected,
-                Id = location.Id
+        Id = location.Id
             };
             var entityAdded = await _context.Locations.AddAsync(obj);
             await _context.SaveChangesAsync();

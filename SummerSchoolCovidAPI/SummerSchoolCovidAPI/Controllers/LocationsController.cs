@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
+using SummerSchoolCovidAPI.Models.DTO;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -13,109 +15,99 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly CovidAPIContext _context;
+         private readonly ILocationService _locationService;
 
-        public LocationsController(CovidAPIContext context)
+        public LocationsController(ILocationService locationService)
         {
-            _context = context;
+            _locationService = locationService;
         }
 
         // GET: api/Locations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
         {
-            return await _context.Locations.ToListAsync();
+            try
+            {
+                return Ok(await _locationService.GetLocations());
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> GetLocation(string id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _locationService.GetLocation(id);
 
             if (location == null)
             {
                 return NotFound();
             }
 
-            return location;
+            return Ok(location);
         }
 
         // PUT: api/Locations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(string id, Location location)
+        public async Task<IActionResult> PutLocation(string id, LocationDTO location)
         {
             if (id != location.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LocationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var locations = await _locationService.UpdateLocation(id,location);
 
-            return NoContent();
+            return Ok(locations);
+
         }
 
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        public async Task<ActionResult<Location>> PostLocation(LocationDTO location)
         {
-            _context.Locations.Add(location);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (LocationExists(location.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return CreatedAtAction("GetLocation", new { id = location.Id }, location);
+            var locationResult = await _locationService.AddLocation(location);
+
+            return Ok(locationResult);
+            
         }
 
         // DELETE: api/Locations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation(string id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+
+            try
             {
-                return NotFound();
+                var location = await _locationService.GetLocation(id);
+                if (location == null)
+                {
+                    return NotFound("Record was not found");
+                }
+
+                _locationService.DeleteLocation(id);
+                return Ok("Record Successfully Deleted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            _context.Locations.Remove(location);
-            await _context.SaveChangesAsync();
 
+
+           
             return NoContent();
         }
 
-        private bool LocationExists(string id)
-        {
-            return _context.Locations.Any(e => e.Id == id);
-        }
+     
     }
 }
