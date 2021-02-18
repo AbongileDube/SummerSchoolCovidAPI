@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
+using SummerSchoolCovidAPI.Services;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -14,25 +16,28 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class CovidCaseContactsController : ControllerBase
     {
+
+        private readonly ICovidCaseContactService _covidCaseContactService;
         private readonly CovidAPIContext _context;
 
-        public CovidCaseContactsController(CovidAPIContext context)
+
+        public CovidCaseContactsController(ICovidCaseContactService covidcontactservice)
         {
-            _context = context;
+            _covidCaseContactService = covidcontactservice;
         }
 
         // GET: api/CovidCaseContacts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CovidCaseContactDTO>>> GetContact()
         {
-            return Ok(await _context.CovidCaseContacts.ToListAsync());
+            return Ok(await _covidCaseContactService.GetCovidCaseContact());
 
         }
         // GET: api/CovidCaseContacts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CovidCaseContact>> GetCovidCaseContact(string id)
         {
-            var covidCaseContact = await _context.CovidCaseContacts.FindAsync(id);
+            var covidCaseContact = await _covidCaseContactService.GetCovidCaseContact(id);
 
             if (covidCaseContact == null)
             {
@@ -50,13 +55,11 @@ namespace SummerSchoolCovidAPI.Controllers
             if (id != covidCaseContactDTO.Id)
             {
                 return BadRequest();
-            }
-
-            
+            }           
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _covidCaseContactService.UpdateCovidCaseContact(id, covidCaseContactDTO);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,11 +79,11 @@ namespace SummerSchoolCovidAPI.Controllers
         // POST: api/CovidCaseContacts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CovidCaseContact>> PostCovidCaseContact(CovidCaseContact covidCaseContact)
+        public async Task<ActionResult<CovidCaseContact>> PostCovidCaseContact(CovidCaseContactDTO covidCaseContact)
         {
-            _context.CovidCaseContacts.Add(covidCaseContact);
+           
             
-                await _context.SaveChangesAsync();
+                await _covidCaseContactService.AddCovidCaseContact(covidCaseContact);
 
             return CreatedAtAction(nameof(GetCovidCaseContact), new { id = covidCaseContact.Id }, covidCaseContact);
         }
@@ -89,14 +92,13 @@ namespace SummerSchoolCovidAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCovidCaseContact(string id)
         {
-            var covidCaseContact = await _context.CovidCaseContacts.FindAsync(id);
+            var covidCaseContact = await _covidCaseContactService.GetCovidCaseContact(id);
             if (covidCaseContact == null)
             {
                 return NotFound();
             }
 
-            _context.CovidCaseContacts.Remove(covidCaseContact);
-            await _context.SaveChangesAsync();
+            await _covidCaseContactService.DeleteCovidCaseContact(id);
 
             return NoContent();
         }

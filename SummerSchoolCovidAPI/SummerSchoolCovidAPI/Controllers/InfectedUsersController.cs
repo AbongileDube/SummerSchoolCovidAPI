@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
+using SummerSchoolCovidAPI.Models.DTO;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -14,24 +16,25 @@ namespace SummerSchoolCovidAPI.Controllers
     public class InfectedUsersController : ControllerBase
     {
         private readonly CovidAPIContext _context;
+        private readonly IInfectedUserService _infectedUserService;
 
-        public InfectedUsersController(CovidAPIContext context)
+        public InfectedUsersController(IInfectedUserService infectedUserService)
         {
-            _context = context;
+            _infectedUserService = infectedUserService;
         }
 
         // GET: api/InfectedUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InfectedUser>>> GetInfectedUsers()
+        public async Task<ActionResult<IEnumerable<InfectedUserDTO>>> GetInfectedUsers()
         {
-            return await _context.InfectedUsers.ToListAsync();
+            return Ok(await _infectedUserService.GetInfectedUsers());
         }
 
         // GET: api/InfectedUsers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<InfectedUser>> GetInfectedUser(string id)
         {
-            var infectedUser = await _context.InfectedUsers.FindAsync(id);
+            var infectedUser = await _infectedUserService.GetInfectedUser(id);
 
             if (infectedUser == null)
             {
@@ -44,18 +47,16 @@ namespace SummerSchoolCovidAPI.Controllers
         // PUT: api/InfectedUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInfectedUser(string id, InfectedUser infectedUser)
+        public async Task<IActionResult> UpdateInfectedUser(string id, InfectedUserDTO infectedUserDTO)
         {
-            if (id != infectedUser.Id)
+            if (id != infectedUserDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(infectedUser).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _infectedUserService.UpdateInfectedUser(id, infectedUserDTO);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,12 +76,12 @@ namespace SummerSchoolCovidAPI.Controllers
         // POST: api/InfectedUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<InfectedUser>> PostInfectedUser(InfectedUser infectedUser)
+        public async Task<ActionResult<InfectedUser>> PostInfectedUser(InfectedUserDTO infectedUser)
         {
-            _context.InfectedUsers.Add(infectedUser);
+            
             try
             {
-                await _context.SaveChangesAsync();
+                await _infectedUserService.AddInfectedUser(infectedUser);
             }
             catch (DbUpdateException)
             {
@@ -101,13 +102,13 @@ namespace SummerSchoolCovidAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInfectedUser(string id)
         {
-            var infectedUser = await _context.InfectedUsers.FindAsync(id);
+            var infectedUser = await _infectedUserService.GetInfectedUser(id);
             if (infectedUser == null)
             {
                 return NotFound();
             }
 
-            _context.InfectedUsers.Remove(infectedUser);
+            await _infectedUserService.DeleteInfectedUser(id);
             await _context.SaveChangesAsync();
 
             return NoContent();

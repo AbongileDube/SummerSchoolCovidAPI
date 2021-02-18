@@ -13,9 +13,7 @@ namespace SummerSchoolCovidAPI.Models.DTO
         public string Surname { get; set; }
         public string LocationId { get; set; }
         [DataType(DataType.PhoneNumber)]
-        public string MobileNumber { get; set; }
-        [DataType(DataType.EmailAddress)]
-
+        public string MobileNumber { get; set; }   
         public string Email { get; set; }
         public bool Infected { get; set; }
      
