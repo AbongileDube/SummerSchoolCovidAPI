@@ -67,5 +67,26 @@ namespace SummerSchoolCovidAPI.Controllers
 
             return Ok(covidCaseResult);
         }
+
+        // DELETE: api/InfectedUsers/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCovidCase(string id)
+        {
+            var covidCase = await _covidCaseService.Remove.FindAsync(id);
+            if (covidCase == null)
+            {
+                return NotFound();
+            }
+
+            _covidCaseService.covidCase.Remove(covidCase);
+            await _covidCaseService.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool CovidCaseExists(string id)
+        {
+            return_covidCaseService.CovidCase.Any(e => e.Id == id);
+        }
     }
 }

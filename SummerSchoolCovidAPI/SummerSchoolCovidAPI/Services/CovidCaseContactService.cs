@@ -56,19 +56,20 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.CovidCases.ToListAsync();
         }
 
-        //public async Task<CovidCase> UpdateCovidCaseContact(string id, CovidCaseDTO covidCase)
-        //{
-        //    return await _context.CovidCaseContacts.ToListAsync();
-        //}
+        public async Task<List<CovidCaseContact>> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCase)
+        {
+          return await _context.CovidCaseContacts.ToListAsync();
+        }
 
-        //public async Task<CovidCaseContact> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContact)
-        //{
-        //    var entity = await _context.CovidCaseContacts.FindAsync(id);
-        //    if (entity == null)
-        //    {
-        //        throw new KeyNotFoundException($"Given Id:'{id}' is not found");
-        //    }
-        //}
+        public async Task<CovidCaseContact> UpdateCovidCaseContact(string id)
+        {
+           var entity = await _context.CovidCaseContacts.FindAsync(id);
+          if (entity == null)
+          {
+              throw new KeyNotFoundException($"Given Id:'{id}' is not found");
+           }
+            return entity;
+        }
 
         Task<CovidCaseContact> ICovidCaseContactService.GetCovidCaseContact(string id)
         {
