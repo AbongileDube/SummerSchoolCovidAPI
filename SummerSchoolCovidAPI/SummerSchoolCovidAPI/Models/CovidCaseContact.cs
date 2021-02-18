@@ -19,7 +19,6 @@ namespace SummerSchoolCovidAPI.Models
         public string MobileNumber { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public string Secret { get; set; }
 
         [ForeignKey("CovidCaseId")]
         public virtual CovidCase CovidCase { get; set; }

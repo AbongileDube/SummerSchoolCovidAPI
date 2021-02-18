@@ -19,7 +19,7 @@ namespace SummerSchoolCovidAPI.Services
                 Name = infectedUser.Name,
                 Surname = infectedUser.Surname,
                 Email = infectedUser.Email,
-                Location = infectedUser.Location,
+                LocationId = infectedUser.LocationId,
                 MobileNumber = infectedUser.MobileNumber,
                 Infected = infectedUser.Infected,
                 Id = infectedUser.Id,
@@ -56,7 +56,7 @@ namespace SummerSchoolCovidAPI.Services
             }
             entity.Name = infectedUser.Name;
             entity.Surname = infectedUser.Surname;
-            entity.Location = infectedUser.Location;
+            entity.LocationId = infectedUser.LocationId;
             entity.Infected = infectedUser.Infected;
             entity.MobileNumber = infectedUser.MobileNumber;
             entity.Email = infectedUser.Email;

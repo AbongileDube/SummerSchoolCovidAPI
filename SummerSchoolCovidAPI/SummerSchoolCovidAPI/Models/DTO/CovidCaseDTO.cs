@@ -12,6 +12,6 @@ namespace SummerSchoolCovidAPI.Models.DTO
         public string TestLocation { get; set; }
         public DateTime DateActioned { get; set; }
         public string DoctorName { get; set; }
-        public string Secret { get; set; }
+    
     }
 }

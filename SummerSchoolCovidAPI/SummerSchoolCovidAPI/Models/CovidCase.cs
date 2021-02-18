@@ -14,8 +14,10 @@ namespace SummerSchoolCovidAPI.Models
         public string TestLocation { get; set; }
         public DateTime DateActioned { get; set; }
         public string DoctorName { get; set; }
-        public string Secret { get; set; }
+       
         [ForeignKey("InfectedUserId")]
         public virtual InfectedUser InfectedUser { get; set; }
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; }
     }
 }

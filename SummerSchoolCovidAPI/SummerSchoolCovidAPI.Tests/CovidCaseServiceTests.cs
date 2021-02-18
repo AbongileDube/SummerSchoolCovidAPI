@@ -23,7 +23,7 @@ namespace SummerSchoolCovidAPI.Tests
             Email = "test-user@test.co.za",
             Id = "user-1",
             Infected = true,
-            Location = "Durban",
+            LocationId = "Durban",
             MobileNumber = "0382147864",
             Name = "Bheki",
             Surname = "Zulu"
