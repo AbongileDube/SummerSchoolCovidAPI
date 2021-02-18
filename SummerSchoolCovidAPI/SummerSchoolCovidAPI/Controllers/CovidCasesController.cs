@@ -16,6 +16,7 @@ namespace SummerSchoolCovidAPI.Controllers
     public class CovidCasesController : ControllerBase
     {
         private readonly ICovidCaseService _covidCaseService;
+        private readonly CovidAPIContext _context;
 
         public CovidCasesController(ICovidCaseService covidCaseService)
         {
@@ -67,26 +68,24 @@ namespace SummerSchoolCovidAPI.Controllers
 
             return Ok(covidCaseResult);
         }
-
-        // DELETE: api/InfectedUsers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCovidCase(string id)
         {
-            var covidCase = await _covidCaseService.Remove.FindAsync(id);
+            var covidCase = await _covidCaseService.GetCovidCase(id);
             if (covidCase == null)
             {
                 return NotFound();
             }
 
-            _covidCaseService.covidCase.Remove(covidCase);
-            await _covidCaseService.SaveChangesAsync();
+            _context.CovidCases.Remove(covidCase);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool CovidCaseExists(string id)
         {
-            return_covidCaseService.CovidCase.Any(e => e.Id == id);
+            return _context.CovidCases.Any(e => e.Id == id);
         }
     }
 }

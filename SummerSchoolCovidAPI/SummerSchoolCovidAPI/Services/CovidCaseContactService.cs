@@ -71,9 +71,5 @@ namespace SummerSchoolCovidAPI.Services
             return entity;
         }
 
-        Task<CovidCaseContact> ICovidCaseContactService.GetCovidCaseContact(string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
