@@ -10,7 +10,10 @@ namespace SummerSchoolCovidAPI.Models
     {
         public CovidDbContext(DbContextOptions<CovidDbContext> options) : base(options)
         {
-            Database.Migrate();
+            if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                Database.Migrate();
+            }
         }
 
         public DbSet<CovidCaseContact> CovidCaseContacts { get; set; }
