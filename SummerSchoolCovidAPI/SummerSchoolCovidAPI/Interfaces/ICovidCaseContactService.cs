@@ -10,8 +10,8 @@ namespace SummerSchoolCovidAPI.Interfaces
    public interface ICovidCaseContactService
     {
 
-        Task<CovidCaseContact> AddCovidCaseContact(CovidCaseContactDTO covidCaseContact);
-        Task<List<CovidCaseContact>> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContact);
+        Task<CovidCaseContact> AddCovidCaseContact(CovidCaseContactDto covidCaseContact);
+        Task<List<CovidCaseContact>> UpdateCovidCaseContact(string id, CovidCaseContactDto covidCaseContact);
         Task DeleteCovidCaseContact(string id);
         Task<CovidCaseContact> GetCovidCaseContact(string id);
         Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact();

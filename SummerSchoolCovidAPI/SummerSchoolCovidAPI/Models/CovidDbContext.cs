@@ -6,21 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SummerSchoolCovidAPI.Models
 {
-    public class CovidAPIContext : DbContext
+    public class CovidDbContext : DbContext
     {
-        public CovidAPIContext()
+        public CovidDbContext(DbContextOptions<CovidDbContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
-        public CovidAPIContext(DbContextOptions<CovidAPIContext> options) : base(options)
-        {
-
-        }
         public DbSet<CovidCaseContact> CovidCaseContacts { get; set; }
         public DbSet<InfectedUser> InfectedUsers { get; set; }
         public DbSet<CovidCase> CovidCases { get; set; }
         public DbSet<Location> Locations { get; set; }
-      
-
     }
 }

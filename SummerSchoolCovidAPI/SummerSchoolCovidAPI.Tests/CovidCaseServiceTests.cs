@@ -14,8 +14,8 @@ namespace SummerSchoolCovidAPI.Tests
     [TestClass]
     public class CovidCaseServiceTests
     {
-        private CovidAPIContext _dbContext;
-        private DbContextOptions<CovidAPIContext> _dbContextOptions;
+        private CovidDbContext _dbContext;
+        private DbContextOptions<CovidDbContext> _dbContextOptions;
         private ICovidCaseService _service;
 
         private readonly InfectedUser _infectedUser = new InfectedUser
@@ -32,8 +32,8 @@ namespace SummerSchoolCovidAPI.Tests
         [TestInitialize]
         public async Task Setup()
         {
-            _dbContextOptions = new DbContextOptionsBuilder<CovidAPIContext>().UseInMemoryDatabase(databaseName: "CovidAPI").Options;
-            _dbContext = new CovidAPIContext(_dbContextOptions);
+            _dbContextOptions = new DbContextOptionsBuilder<CovidDbContext>().UseInMemoryDatabase(databaseName: "CovidAPI").Options;
+            _dbContext = new CovidDbContext(_dbContextOptions);
 
             // This ensures that the FabrikMixedContentDbContext is flushed before every test.
             await _dbContext.Database.EnsureDeletedAsync();
@@ -48,12 +48,12 @@ namespace SummerSchoolCovidAPI.Tests
         public async Task AddCovidCase_GivenValidInput_ShouldAddCovidCaseSuccessfully()
         {
             //Arrange
-            var covidCaseDto = new CovidCaseDTO
+            var covidCaseDto = new CovidCaseDto
             {
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
                 InfectedUserId = _infectedUser.Id,
-                LocationId= "South Africa, Durban",
+                LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
 
@@ -72,7 +72,7 @@ namespace SummerSchoolCovidAPI.Tests
         public async Task GetCovidCases_GivenTwoExist_ShouldReturnTwoCovidCases()
         {
             //Arrange
-            var covidCaseDto1 = new CovidCaseDTO
+            var covidCaseDto1 = new CovidCaseDto
             {
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
@@ -80,7 +80,7 @@ namespace SummerSchoolCovidAPI.Tests
                 LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
-            var covidCaseDto2 = new CovidCaseDTO
+            var covidCaseDto2 = new CovidCaseDto
             {
                 DoctorName = "Joe Zuma",
                 Id = "case-2",
@@ -110,7 +110,7 @@ namespace SummerSchoolCovidAPI.Tests
         public async Task UpdateCovidCase_GivenInValidId_ShouldThrowKeyNotFoundException()
         {
             //Arrange
-            var covidCaseDto = new CovidCaseDTO
+            var covidCaseDto = new CovidCaseDto
             {
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
@@ -127,7 +127,7 @@ namespace SummerSchoolCovidAPI.Tests
         public async Task UpdateCovidCase_GivenValidInputs_ShouldUpdateSuccessfully()
         {
             //Arrange
-            var covidCaseDto1 = new CovidCaseDTO
+            var covidCaseDto1 = new CovidCaseDto
             {
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
@@ -135,7 +135,7 @@ namespace SummerSchoolCovidAPI.Tests
                 LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
-            var covidCaseDto2 = new CovidCaseDTO
+            var covidCaseDto2 = new CovidCaseDto
             {
                 DoctorName = "Joe Zuma",
                 Id = "case-2",
@@ -143,7 +143,7 @@ namespace SummerSchoolCovidAPI.Tests
                 LocationId = "South Africa, Durban North",
                 DateActioned = DateTime.Now
             };
-            var covidCaseDtoUpdate = new CovidCaseDTO
+            var covidCaseDtoUpdate = new CovidCaseDto
             {
                 DoctorName = "Joe Zuma - update",
                 InfectedUserId = _infectedUser.Id,

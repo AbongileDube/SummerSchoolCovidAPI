@@ -16,10 +16,7 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class CovidCaseContactsController : ControllerBase
     {
-
         private readonly ICovidCaseContactService _covidCaseContactService;
-       
-
 
         public CovidCaseContactsController(ICovidCaseContactService covidcontactservice)
         {
@@ -28,11 +25,11 @@ namespace SummerSchoolCovidAPI.Controllers
 
         // GET: api/CovidCaseContacts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CovidCaseContactDTO>>> GetContact()
+        public async Task<ActionResult<IEnumerable<CovidCaseContactDto>>> GetContact()
         {
             return Ok(await _covidCaseContactService.GetCovidCaseContact());
-
         }
+
         // GET: api/CovidCaseContacts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CovidCaseContact>> GetCovidCaseContact(string id)
@@ -50,35 +47,23 @@ namespace SummerSchoolCovidAPI.Controllers
         // PUT: api/CovidCaseContacts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCaseContactDTO)
+        public async Task<IActionResult> UpdateCovidCaseContact(string id, CovidCaseContactDto covidCaseContactDTO)
         {
             if (id != covidCaseContactDTO.Id)
             {
                 return BadRequest();
-            }           
-
-            try
-            {
-                await _covidCaseContactService.UpdateCovidCaseContact(id, covidCaseContactDTO);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-               
             }
 
-            return NoContent();
+            return Ok(await _covidCaseContactService.UpdateCovidCaseContact(id, covidCaseContactDTO));
         }
 
         // POST: api/CovidCaseContacts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CovidCaseContact>> PostCovidCaseContact(CovidCaseContactDTO covidCaseContact)
+        public async Task<ActionResult<CovidCaseContact>> PostCovidCaseContact(CovidCaseContactDto covidCaseContact)
         {
-           
-            
-                await _covidCaseContactService.AddCovidCaseContact(covidCaseContact);
-
-            return CreatedAtAction(nameof(GetCovidCaseContact), new { id = covidCaseContact.Id }, covidCaseContact);
+            var addedCovidCaseContact = await _covidCaseContactService.AddCovidCaseContact(covidCaseContact);
+            return CreatedAtAction("/", new { id = covidCaseContact.Id }, addedCovidCaseContact);
         }
 
         // DELETE: api/CovidCaseContacts/5
@@ -95,7 +80,5 @@ namespace SummerSchoolCovidAPI.Controllers
 
             return NoContent();
         }
-
-       
     }
 }

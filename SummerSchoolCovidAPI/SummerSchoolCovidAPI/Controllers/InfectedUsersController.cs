@@ -15,18 +15,16 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class InfectedUsersController : ControllerBase
     {
-        private readonly CovidAPIContext _context;
         private readonly IInfectedUserService _infectedUserService;
 
-        public InfectedUsersController(IInfectedUserService context, CovidAPIContext covidAPIContext)
+        public InfectedUsersController(IInfectedUserService context)
         {
             _infectedUserService = context;
-            _context = covidAPIContext;
         }
 
         // GET: api/InfectedUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InfectedUserDTO>>> GetInfectedUsers()
+        public async Task<ActionResult<IEnumerable<InfectedUserDto>>> GetInfectedUsers()
         {
             return Ok(await _infectedUserService.GetInfectedUsers());
         }
@@ -48,55 +46,23 @@ namespace SummerSchoolCovidAPI.Controllers
         // PUT: api/InfectedUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateInfectedUser(string id, InfectedUserDTO infectedUserDTO)
+        public async Task<ActionResult<InfectedUser>> UpdateInfectedUser(string id, InfectedUserDto infectedUserDTO)
         {
             if (id != infectedUserDTO.Id)
             {
                 return BadRequest();
             }
 
-            try
-            {
-                await _infectedUserService.UpdateInfectedUser(id, infectedUserDTO);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InfectedUserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(await _infectedUserService.UpdateInfectedUser(id, infectedUserDTO));
         }
 
         // POST: api/InfectedUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<InfectedUser>> PostInfectedUser(InfectedUserDTO infectedUser)
+        public async Task<ActionResult<InfectedUser>> PostInfectedUser(InfectedUserDto infectedUser)
         {
-            
-            try
-            {
-                await _infectedUserService.AddInfectedUser(infectedUser);
-            }
-            catch (DbUpdateException)
-            {
-                if (InfectedUserExists(infectedUser.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetInfectedUser", new { id = infectedUser.Id }, infectedUser);
+            var addedInfectedUser = await _infectedUserService.AddInfectedUser(infectedUser);
+            return CreatedAtAction("/", new { id = infectedUser.Id }, addedInfectedUser);
         }
 
         // DELETE: api/InfectedUsers/5
@@ -110,14 +76,8 @@ namespace SummerSchoolCovidAPI.Controllers
             }
 
             await _infectedUserService.DeleteInfectedUser(id);
-         
 
             return NoContent();
-        }
-
-        private bool InfectedUserExists(string id)
-        {
-            return _context.InfectedUsers.Any(e => e.Id == id);
         }
     }
 }

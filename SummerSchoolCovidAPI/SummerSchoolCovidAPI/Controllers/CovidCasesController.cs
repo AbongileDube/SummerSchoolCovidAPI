@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using SummerSchoolCovidAPI.Interfaces;
 using SummerSchoolCovidAPI.Models;
 using SummerSchoolCovidAPI.Models.DTO;
-using SummerSchoolCovidAPI.Models.Logic;
 
 namespace SummerSchoolCovidAPI.Controllers
 {
@@ -51,7 +50,7 @@ namespace SummerSchoolCovidAPI.Controllers
         // PUT: api/CovidCases/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCovidCase(string id, CovidCaseDTO covidCase)
+        public async Task<IActionResult> PutCovidCase(string id, CovidCaseDto covidCase)
         {
             if (id != covidCase.Id)
             {
@@ -66,28 +65,24 @@ namespace SummerSchoolCovidAPI.Controllers
         // POST: api/CovidCases
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCaseDTO covidCase)
+        public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCaseDto covidCase)
         {
-
             var infectedUser = await _infectedUserService.GetInfectedUser(covidCase.InfectedUserId);
             var location = await _locationService.GetLocation(infectedUser.LocationId);
-            await _locationService.UpdateLocation(location.Id,new LocationDTO
-            { 
-          Id= location.Id,
-          City = location.City,
-          Suburb = location.Suburb,
-          Province =location.Province,
-          CNumberInfected =location.CNumberInfected+1,
-          
-          
-            } 
+            await _locationService.UpdateLocation(location.Id, new LocationDto
+            {
+                Id = location.Id,
+                City = location.City,
+                Suburb = location.Suburb,
+                Province = location.Province,
+                CNumberInfected = location.CNumberInfected + 1,
+            }
             );
             var covidCaseResult = await _covidCaseService.AddCovidCase(covidCase);
 
-
-
             return Ok(covidCaseResult);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCovidCase(string id)
         {
@@ -100,7 +95,5 @@ namespace SummerSchoolCovidAPI.Controllers
             await _covidCaseService.DeleteCovidCase(id);
             return NoContent();
         }
-
-        
     }
 }

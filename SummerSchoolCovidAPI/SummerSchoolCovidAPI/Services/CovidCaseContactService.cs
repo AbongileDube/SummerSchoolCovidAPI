@@ -11,14 +11,14 @@ namespace SummerSchoolCovidAPI.Services
 {
     public class CovidCaseContactService : ICovidCaseContactService
     {
-        private readonly CovidAPIContext _context;
+        private readonly CovidDbContext _context;
 
-        public CovidCaseContactService(CovidAPIContext context)
+        public CovidCaseContactService(CovidDbContext context)
         {
             _context = context;
         }
 
-        public async Task<CovidCaseContact> AddCovidCaseContact(CovidCaseContactDTO covidCaseContact)
+        public async Task<CovidCaseContact> AddCovidCaseContact(CovidCaseContactDto covidCaseContact)
         {
             var obj = new CovidCaseContact
             {
@@ -26,8 +26,8 @@ namespace SummerSchoolCovidAPI.Services
                 Surname = covidCaseContact.Surname,
                 Email = covidCaseContact.Email,
                 MobileNumber = covidCaseContact.MobileNumber,
-                LocationId= covidCaseContact.LocationId,
-                InfectedUserId =covidCaseContact.InfectedUserId,
+                LocationId = covidCaseContact.LocationId,
+                InfectedUserId = covidCaseContact.InfectedUserId,
                 CovidCaseId = covidCaseContact.CovidCaseId,
                 Id = covidCaseContact.Id,
             };
@@ -48,7 +48,7 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.CovidCaseContacts.FindAsync(id);
         }
 
-        public  async Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact()
+        public async Task<IEnumerable<CovidCaseContact>> GetCovidCaseContact()
         {
             return await _context.CovidCaseContacts.ToListAsync();
         }
@@ -58,20 +58,19 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.CovidCases.ToListAsync();
         }
 
-        public async Task<List<CovidCaseContact>> UpdateCovidCaseContact(string id, CovidCaseContactDTO covidCase)
+        public async Task<List<CovidCaseContact>> UpdateCovidCaseContact(string id, CovidCaseContactDto covidCase)
         {
-          return await _context.CovidCaseContacts.ToListAsync();
+            return await _context.CovidCaseContacts.ToListAsync();
         }
 
         public async Task<CovidCaseContact> UpdateCovidCaseContact(string id)
         {
-           var entity = await _context.CovidCaseContacts.FindAsync(id);
-          if (entity == null)
-          {
-              throw new KeyNotFoundException($"Given Id:'{id}' is not found");
-           }
+            var entity = await _context.CovidCaseContacts.FindAsync(id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Given Id:'{id}' is not found");
+            }
             return entity;
         }
-
     }
 }

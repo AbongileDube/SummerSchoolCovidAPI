@@ -11,13 +11,14 @@ namespace SummerSchoolCovidAPI.Services
 {
     public class InfectedUserService : IInfectedUserService
     {
-        private readonly CovidAPIContext _context;
+        private readonly CovidDbContext _context;
 
-        public InfectedUserService(CovidAPIContext covidAPIContext)
+        public InfectedUserService(CovidDbContext covidAPIContext)
         {
             _context = covidAPIContext;
         }
-        public async Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser)
+
+        public async Task<InfectedUser> AddInfectedUser(InfectedUserDto infectedUser)
         {
             var obj = new InfectedUser
             {
@@ -51,8 +52,8 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.InfectedUsers.ToListAsync();
         }
 
-        public async Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDTO infectedUser)
-            
+        public async Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDto infectedUser)
+
         {
             var entity = await _context.InfectedUsers.FindAsync(id);
             if (entity == null)

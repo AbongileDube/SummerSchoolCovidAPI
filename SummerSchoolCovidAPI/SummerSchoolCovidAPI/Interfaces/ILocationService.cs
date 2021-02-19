@@ -9,8 +9,8 @@ namespace SummerSchoolCovidAPI.Interfaces
 {
     public interface ILocationService
     {
-        Task<Location> AddLocation(LocationDTO location);
-        Task<Location> UpdateLocation(string id, LocationDTO location);
+        Task<Location> AddLocation(LocationDto location);
+        Task<Location> UpdateLocation(string id, LocationDto location);
         Task DeleteLocation(string id);
         Task<Location> GetLocation(string id);
         Task<IEnumerable<Location>> GetLocations();

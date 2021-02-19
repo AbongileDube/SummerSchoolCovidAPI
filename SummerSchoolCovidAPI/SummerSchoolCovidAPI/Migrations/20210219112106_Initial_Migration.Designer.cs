@@ -9,7 +9,7 @@ using SummerSchoolCovidAPI.Models;
 
 namespace SummerSchoolCovidAPI.Migrations
 {
-    [DbContext(typeof(CovidAPIContext))]
+    [DbContext(typeof(CovidDbContext))]
     [Migration("20210219112106_Initial_Migration")]
     partial class Initial_Migration
     {

@@ -11,13 +11,14 @@ namespace SummerSchoolCovidAPI.Services
 {
     public class LocationService : ILocationService
     {
-        private readonly CovidAPIContext _context;
-        public LocationService (CovidAPIContext context)
+        private readonly CovidDbContext _context;
+
+        public LocationService(CovidDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Location> AddLocation(LocationDTO location)
+        public async Task<Location> AddLocation(LocationDto location)
         {
             var obj = new Location
             {
@@ -25,7 +26,7 @@ namespace SummerSchoolCovidAPI.Services
                 Suburb = location.Suburb,
                 Province = location.Province,
                 CNumberInfected = location.CNumberInfected,
-        Id = location.Id
+                Id = location.Id
             };
             var entityAdded = await _context.Locations.AddAsync(obj);
             await _context.SaveChangesAsync();
@@ -54,7 +55,7 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.Locations.ToListAsync();
         }
 
-        public async Task<Location> UpdateLocation(string id, LocationDTO location)
+        public async Task<Location> UpdateLocation(string id, LocationDto location)
         {
             var entity = await _context.Locations.FindAsync(id);
             if (entity == null)

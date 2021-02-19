@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SummerSchoolCovidAPI.Models.DTO
 {
-    public class CovidCaseDTO
+    public class CovidCaseDto
     {
         public string Id { get; set; }
         public string InfectedUserId { get; set; }
@@ -13,6 +13,5 @@ namespace SummerSchoolCovidAPI.Models.DTO
         public DateTime DateActioned { get; set; }
         public string DoctorName { get; set; }
         public bool Infected { get; set; }
-
     }
 }

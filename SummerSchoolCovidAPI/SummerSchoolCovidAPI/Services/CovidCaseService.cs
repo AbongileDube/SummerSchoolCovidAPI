@@ -11,24 +11,22 @@ namespace SummerSchoolCovidAPI.Services
 {
     public class CovidCaseService : ICovidCaseService
     {
-        private readonly CovidAPIContext _context;
+        private readonly CovidDbContext _context;
 
-        public CovidCaseService(CovidAPIContext context)
+        public CovidCaseService(CovidDbContext context)
         {
             _context = context;
         }
 
-        public async Task<CovidCase> AddCovidCase(CovidCaseDTO covidCase)
+        public async Task<CovidCase> AddCovidCase(CovidCaseDto covidCase)
         {
             var obj = new CovidCase
             {
                 DateActioned = DateTime.Now,
                 DoctorName = covidCase.DoctorName,
-                LocationId =covidCase.LocationId,
+                LocationId = covidCase.LocationId,
                 InfectedUserId = covidCase.InfectedUserId,
                 Id = covidCase.Id
-                
-                
             };
             var entityAdded = await _context.CovidCases.AddAsync(obj);
             await _context.SaveChangesAsync();
@@ -52,7 +50,7 @@ namespace SummerSchoolCovidAPI.Services
             return await _context.CovidCases.ToListAsync();
         }
 
-        public async Task<CovidCase> UpdateCovidCase(string id, CovidCaseDTO covidCase)
+        public async Task<CovidCase> UpdateCovidCase(string id, CovidCaseDto covidCase)
         {
             var entity = await _context.CovidCases.FindAsync(id);
             if (entity == null)
@@ -63,7 +61,7 @@ namespace SummerSchoolCovidAPI.Services
             entity.DoctorName = covidCase.DoctorName;
             entity.LocationId = covidCase.LocationId;
             entity.InfectedUserId = covidCase.InfectedUserId;
-           
+
             await _context.SaveChangesAsync();
             return entity;
         }

@@ -6,16 +6,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SummerSchoolCovidAPI.Models.DTO
 {
-    public class InfectedUserDTO
+    public class InfectedUserDto
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string LocationId { get; set; }
+
         [DataType(DataType.PhoneNumber)]
-        public string MobileNumber { get; set; }   
+        public string MobileNumber { get; set; }
+
         public string Email { get; set; }
         public bool Infected { get; set; }
-     
     }
 }

@@ -7,14 +7,12 @@ using SummerSchoolCovidAPI.Models.DTO;
 
 namespace SummerSchoolCovidAPI.Models.DTO
 {
-    public class LocationDTO
+    public class LocationDto
     {
         public string Id { get; set; }
         public string City { get; set; }
         public string Suburb { get; set; }
         public string Province { get; set; }
         public int CNumberInfected { get; set; } //current Number of people infected
-   
-
     }
 }

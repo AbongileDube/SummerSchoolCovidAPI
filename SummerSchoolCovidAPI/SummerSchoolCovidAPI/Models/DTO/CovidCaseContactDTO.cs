@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SummerSchoolCovidAPI.Models.DTO
 {
-    public class CovidCaseContactDTO
+    public class CovidCaseContactDto
     {
         public string Id { get; set; }
         public string Name { get; set; }

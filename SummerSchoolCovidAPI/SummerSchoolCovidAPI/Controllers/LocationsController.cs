@@ -15,7 +15,7 @@ namespace SummerSchoolCovidAPI.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-         private readonly ILocationService _locationService;
+        private readonly ILocationService _locationService;
 
         public LocationsController(ILocationService locationService)
         {
@@ -26,16 +26,7 @@ namespace SummerSchoolCovidAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
         {
-            try
-            {
-                return Ok(await _locationService.GetLocations());
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            return Ok(await _locationService.GetLocations());
         }
 
         // GET: api/Locations/5
@@ -55,59 +46,39 @@ namespace SummerSchoolCovidAPI.Controllers
         // PUT: api/Locations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(string id, LocationDTO location)
+        public async Task<IActionResult> PutLocation(string id, LocationDto location)
         {
             if (id != location.Id)
             {
                 return BadRequest();
             }
 
-
-            var locations = await _locationService.UpdateLocation(id,location);
+            var locations = await _locationService.UpdateLocation(id, location);
 
             return Ok(locations);
-
         }
 
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(LocationDTO location)
+        public async Task<ActionResult<Location>> PostLocation(LocationDto location)
         {
-
             var locationResult = await _locationService.AddLocation(location);
 
             return Ok(locationResult);
-            
         }
 
         // DELETE: api/Locations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation(string id)
         {
-
-            try
+            var location = await _locationService.GetLocation(id);
+            if (location == null)
             {
-                var location = await _locationService.GetLocation(id);
-                if (location == null)
-                {
-                    return NotFound("Record was not found");
-                }
-
-                _locationService.DeleteLocation(id);
-                return Ok("Record Successfully Deleted");
+                return NotFound("Record was not found");
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-
-
-           
-            return NoContent();
+            await _locationService.DeleteLocation(id);
+            return Ok("Record Successfully Deleted");
         }
-
-     
     }
 }

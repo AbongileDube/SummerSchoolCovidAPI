@@ -9,11 +9,14 @@ namespace SummerSchoolCovidAPI.Interfaces
 {
     public interface IInfectedUserService
     {
+        Task<InfectedUser> AddInfectedUser(InfectedUserDto infectedUser);
 
-        Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser);
-        Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDTO infectedUser);
+        Task<InfectedUser> UpdateInfectedUser(string id, InfectedUserDto infectedUser);
+
         Task DeleteInfectedUser(string id);
+
         Task<InfectedUser> GetInfectedUser(string id);
+
         Task<IEnumerable<InfectedUser>> GetInfectedUsers();
     }
 }

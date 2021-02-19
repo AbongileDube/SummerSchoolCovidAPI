@@ -35,18 +35,18 @@ namespace SummerSchoolCovidAPI
             services.AddScoped<IInfectedUserService, InfectedUserService>();
             services.AddScoped<ILocationService, LocationService>();
 
-
-
             services.AddControllers();
-            services.AddDbContext<CovidAPIContext>(opt =>
+            services.AddDbContext<CovidDbContext>(opt =>
                                               opt.UseSqlServer(Configuration.GetConnectionString("default")));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {
-                    Title = "Summer School Covid API", 
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Summer School Covid API",
                     Version = "v1",
-                    Contact = new OpenApiContact {
-                        Name = "Abongile Dube" 
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Abongile Dube"
                     }
                 });
             });

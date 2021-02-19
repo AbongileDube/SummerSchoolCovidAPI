@@ -8,7 +8,7 @@ using SummerSchoolCovidAPI.Models;
 
 namespace SummerSchoolCovidAPI.Migrations
 {
-    [DbContext(typeof(CovidAPIContext))]
+    [DbContext(typeof(CovidDbContext))]
     partial class CovidAPIContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
