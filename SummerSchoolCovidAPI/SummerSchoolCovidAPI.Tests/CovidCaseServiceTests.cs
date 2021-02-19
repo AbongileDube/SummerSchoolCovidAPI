@@ -53,7 +53,7 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban",
+                LocationId= "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
 
@@ -64,7 +64,7 @@ namespace SummerSchoolCovidAPI.Tests
             Assert.AreEqual(covidCaseDto.DoctorName, entityAdded.DoctorName);
             Assert.AreEqual(covidCaseDto.Id, entityAdded.Id);
             Assert.AreEqual(covidCaseDto.InfectedUserId, entityAdded.InfectedUserId);
-            Assert.AreEqual(covidCaseDto.TestLocation, entityAdded.TestLocation);
+            Assert.AreEqual(covidCaseDto.LocationId, entityAdded.LocationId);
             Assert.AreEqual(1, await _dbContext.CovidCases.CountAsync());
         }
 
@@ -77,7 +77,7 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban",
+                LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
             var covidCaseDto2 = new CovidCaseDTO
@@ -85,7 +85,7 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Joe Zuma",
                 Id = "case-2",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban North",
+                LocationId = "South Africa, Durban North",
                 DateActioned = DateTime.Now
             };
 
@@ -99,8 +99,8 @@ namespace SummerSchoolCovidAPI.Tests
             Assert.AreEqual(2, entities.Count());
             Assert.IsTrue(entities.Any(a => a.DoctorName == covidCaseDto1.DoctorName));
             Assert.IsTrue(entities.Any(a => a.DoctorName == covidCaseDto2.DoctorName));
-            Assert.IsTrue(entities.Any(a => a.TestLocation == covidCaseDto1.TestLocation));
-            Assert.IsTrue(entities.Any(a => a.TestLocation == covidCaseDto2.TestLocation));
+            Assert.IsTrue(entities.Any(a => a.LocationId == covidCaseDto1.LocationId));
+            Assert.IsTrue(entities.Any(a => a.LocationId == covidCaseDto2.LocationId));
             Assert.IsTrue(entities.Any(a => a.Id == covidCaseDto1.Id));
             Assert.IsTrue(entities.Any(a => a.Id == covidCaseDto2.Id));
             Assert.AreEqual(2, await _dbContext.CovidCases.CountAsync());
@@ -115,7 +115,7 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban",
+                LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
 
@@ -132,7 +132,7 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Zama Dlamini",
                 Id = "case-1",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban",
+                LocationId = "South Africa, Durban",
                 DateActioned = DateTime.Now
             };
             var covidCaseDto2 = new CovidCaseDTO
@@ -140,14 +140,14 @@ namespace SummerSchoolCovidAPI.Tests
                 DoctorName = "Joe Zuma",
                 Id = "case-2",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban North",
+                LocationId = "South Africa, Durban North",
                 DateActioned = DateTime.Now
             };
             var covidCaseDtoUpdate = new CovidCaseDTO
             {
                 DoctorName = "Joe Zuma - update",
                 InfectedUserId = _infectedUser.Id,
-                TestLocation = "South Africa, Durban North - Updated",
+                LocationId = "South Africa, Durban North - Updated",
                 DateActioned = DateTime.Now
             };
 
@@ -159,7 +159,7 @@ namespace SummerSchoolCovidAPI.Tests
 
             //Assert
             Assert.AreEqual(covidCaseDtoUpdate.DoctorName, updated.DoctorName);
-            Assert.AreEqual(covidCaseDtoUpdate.TestLocation, updated.TestLocation);
+            Assert.AreEqual(covidCaseDtoUpdate.LocationId, updated.LocationId);
             Assert.AreEqual(covidCaseDtoUpdate.InfectedUserId, updated.InfectedUserId);
 
             Assert.IsTrue(await _dbContext.CovidCases.AnyAsync(a => a.DoctorName == covidCaseDtoUpdate.DoctorName));

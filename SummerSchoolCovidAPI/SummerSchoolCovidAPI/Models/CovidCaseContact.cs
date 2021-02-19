@@ -24,5 +24,7 @@ namespace SummerSchoolCovidAPI.Models
         public virtual CovidCase CovidCase { get; set; }
         [ForeignKey("InfectedUserId")]
         public virtual InfectedUser InfectedUser { get; set; }
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; }
     }
 }

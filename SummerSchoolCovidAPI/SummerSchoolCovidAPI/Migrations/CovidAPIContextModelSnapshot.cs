@@ -33,15 +33,14 @@ namespace SummerSchoolCovidAPI.Migrations
                     b.Property<string>("InfectedUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Secret")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TestLocation")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LocationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InfectedUserId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("CovidCases");
                 });
@@ -60,16 +59,13 @@ namespace SummerSchoolCovidAPI.Migrations
                     b.Property<string>("InfectedUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LocationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Secret")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
@@ -80,6 +76,8 @@ namespace SummerSchoolCovidAPI.Migrations
                     b.HasIndex("CovidCaseId");
 
                     b.HasIndex("InfectedUserId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("CovidCaseContacts");
                 });
@@ -95,8 +93,8 @@ namespace SummerSchoolCovidAPI.Migrations
                     b.Property<bool>("Infected")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LocationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
@@ -104,15 +102,36 @@ namespace SummerSchoolCovidAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Secret")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("InfectedUsers");
+                });
+
+            modelBuilder.Entity("SummerSchoolCovidAPI.Models.Location", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CNumberInfected")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Province")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Suburb")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("SummerSchoolCovidAPI.Models.CovidCase", b =>
@@ -121,7 +140,13 @@ namespace SummerSchoolCovidAPI.Migrations
                         .WithMany()
                         .HasForeignKey("InfectedUserId");
 
+                    b.HasOne("SummerSchoolCovidAPI.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.Navigation("InfectedUser");
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("SummerSchoolCovidAPI.Models.CovidCaseContact", b =>
@@ -134,9 +159,24 @@ namespace SummerSchoolCovidAPI.Migrations
                         .WithMany()
                         .HasForeignKey("InfectedUserId");
 
+                    b.HasOne("SummerSchoolCovidAPI.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.Navigation("CovidCase");
 
                     b.Navigation("InfectedUser");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("SummerSchoolCovidAPI.Models.InfectedUser", b =>
+                {
+                    b.HasOne("SummerSchoolCovidAPI.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.Navigation("Location");
                 });
 #pragma warning restore 612, 618
         }

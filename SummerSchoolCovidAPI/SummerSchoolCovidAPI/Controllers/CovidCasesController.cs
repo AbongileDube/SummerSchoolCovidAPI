@@ -18,12 +18,13 @@ namespace SummerSchoolCovidAPI.Controllers
     {
         private readonly ICovidCaseService _covidCaseService;
         private readonly IInfectedUserService _infectedUserService;
-        private readonly CovidAPIContext _context;
+        private readonly ILocationService _locationService;
 
-        public CovidCasesController(ICovidCaseService covidCaseService, IInfectedUserService infectedUserService)
+        public CovidCasesController(ICovidCaseService covidCaseService, IInfectedUserService infectedUserService, ILocationService locationService)
         {
             _covidCaseService = covidCaseService;
             _infectedUserService = infectedUserService;
+            _locationService = locationService;
         }
 
         // GET: api/CovidCases
@@ -67,14 +68,22 @@ namespace SummerSchoolCovidAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CovidCase>> PostCovidCase(CovidCaseDTO covidCase)
         {
-            //var infectedUser = await _infectedUserService.GetInfectedUser(covidCase.Id);
-            if (covidCase.Infected == true)
-            {
-                Logic.updateInfectedUser(covidCase.InfectedUserId);
-                Logic.updateLocation(covidCase.InfectedUserId);
-            }
 
+            var infectedUser = await _infectedUserService.GetInfectedUser(covidCase.InfectedUserId);
+            var location = await _locationService.GetLocation(infectedUser.LocationId);
+            await _locationService.UpdateLocation(location.Id,new LocationDTO
+            { 
+          Id= location.Id,
+          City = location.City,
+          Suburb = location.Suburb,
+          Province =location.Province,
+          CNumberInfected =location.CNumberInfected+1,
+          
+          
+            } 
+            );
             var covidCaseResult = await _covidCaseService.AddCovidCase(covidCase);
+
 
 
             return Ok(covidCaseResult);
@@ -88,15 +97,10 @@ namespace SummerSchoolCovidAPI.Controllers
                 return NotFound();
             }
 
-            _context.CovidCases.Remove(covidCase);
-            await _context.SaveChangesAsync();
-
+            await _covidCaseService.DeleteCovidCase(id);
             return NoContent();
         }
 
-        private bool CovidCaseExists(string id)
-        {
-            return _context.CovidCases.Any(e => e.Id == id);
-        }
+        
     }
 }

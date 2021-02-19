@@ -18,7 +18,7 @@ namespace SummerSchoolCovidAPI.Controllers
     {
 
         private readonly ICovidCaseContactService _covidCaseContactService;
-        private readonly CovidAPIContext _context;
+       
 
 
         public CovidCaseContactsController(ICovidCaseContactService covidcontactservice)
@@ -63,14 +63,7 @@ namespace SummerSchoolCovidAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CovidCaseContactExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+               
             }
 
             return NoContent();
@@ -103,9 +96,6 @@ namespace SummerSchoolCovidAPI.Controllers
             return NoContent();
         }
 
-        private bool CovidCaseContactExists(string id)
-        {
-            return _context.CovidCaseContacts.Any(e => e.Id == id);
-        }
+       
     }
 }

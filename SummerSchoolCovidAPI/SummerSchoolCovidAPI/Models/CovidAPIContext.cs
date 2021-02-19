@@ -20,6 +20,7 @@ namespace SummerSchoolCovidAPI.Models
         public DbSet<InfectedUser> InfectedUsers { get; set; }
         public DbSet<CovidCase> CovidCases { get; set; }
         public DbSet<Location> Locations { get; set; }
+      
 
     }
 }

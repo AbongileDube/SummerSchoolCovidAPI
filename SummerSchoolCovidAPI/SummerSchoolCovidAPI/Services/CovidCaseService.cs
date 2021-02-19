@@ -24,9 +24,8 @@ namespace SummerSchoolCovidAPI.Services
             {
                 DateActioned = DateTime.Now,
                 DoctorName = covidCase.DoctorName,
-                TestLocation = covidCase.TestLocation,
+                LocationId =covidCase.LocationId,
                 InfectedUserId = covidCase.InfectedUserId,
-                Infected = covidCase.Infected,
                 Id = covidCase.Id
                 
                 
@@ -62,9 +61,9 @@ namespace SummerSchoolCovidAPI.Services
             }
 
             entity.DoctorName = covidCase.DoctorName;
-            entity.TestLocation = covidCase.TestLocation;
+            entity.LocationId = covidCase.LocationId;
             entity.InfectedUserId = covidCase.InfectedUserId;
-            entity.Infected = covidCase.Infected;
+           
             await _context.SaveChangesAsync();
             return entity;
         }
