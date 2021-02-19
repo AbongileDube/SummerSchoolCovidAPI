@@ -12,6 +12,11 @@ namespace SummerSchoolCovidAPI.Services
     public class InfectedUserService : IInfectedUserService
     {
         private readonly CovidAPIContext _context;
+
+        public InfectedUserService(CovidAPIContext covidAPIContext)
+        {
+            _context = covidAPIContext;
+        }
         public async Task<InfectedUser> AddInfectedUser(InfectedUserDTO infectedUser)
         {
             var obj = new InfectedUser

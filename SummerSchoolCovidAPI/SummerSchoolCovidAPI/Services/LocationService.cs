@@ -39,6 +39,11 @@ namespace SummerSchoolCovidAPI.Services
             await _context.SaveChangesAsync();
         }
 
+        public bool Exists(Location location)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Location> GetLocation(string id)
         {
             return await _context.Locations.FindAsync(id);

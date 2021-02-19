@@ -18,9 +18,10 @@ namespace SummerSchoolCovidAPI.Controllers
         private readonly CovidAPIContext _context;
         private readonly IInfectedUserService _infectedUserService;
 
-        public InfectedUsersController(IInfectedUserService infectedUserService)
+        public InfectedUsersController(IInfectedUserService context, CovidAPIContext covidAPIContext)
         {
-            _infectedUserService = infectedUserService;
+            _infectedUserService = context;
+            _context = covidAPIContext;
         }
 
         // GET: api/InfectedUsers
@@ -109,7 +110,7 @@ namespace SummerSchoolCovidAPI.Controllers
             }
 
             await _infectedUserService.DeleteInfectedUser(id);
-            await _context.SaveChangesAsync();
+         
 
             return NoContent();
         }

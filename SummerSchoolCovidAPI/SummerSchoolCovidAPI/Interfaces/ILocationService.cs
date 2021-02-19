@@ -14,5 +14,6 @@ namespace SummerSchoolCovidAPI.Interfaces
         Task DeleteLocation(string id);
         Task<Location> GetLocation(string id);
         Task<IEnumerable<Location>> GetLocations();
+        bool Exists(Location location);
     }
 }
